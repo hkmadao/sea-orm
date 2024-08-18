@@ -42,6 +42,11 @@ where
     fn find_related() -> Select<R> {
         Select::<R>::new().join_join_rev(JoinType::InnerJoin, Self::to(), Self::via())
     }
+
+    /// Find related Entities by relation def
+    fn find_related_by_relation_def(relation_def: RelationDef) -> Select<R> {
+        Select::<R>::new().join_join_rev(JoinType::InnerJoin, relation_def, Self::via())
+    }
 }
 
 /// Defines a relationship

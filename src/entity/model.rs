@@ -7,6 +7,8 @@ use async_trait::async_trait;
 pub use sea_query::Value;
 use std::fmt::Debug;
 
+use super::RelationDef;
+
 /// A Trait for a Model
 #[async_trait]
 pub trait ModelTrait: Clone + Send + Debug {
@@ -26,6 +28,15 @@ pub trait ModelTrait: Clone + Send + Debug {
         Self::Entity: Related<R>,
     {
         <Self::Entity as Related<R>>::find_related().belongs_to(self)
+    }
+
+    /// Find related Models relation def
+    fn find_related_by_relation_def<R>(&self, _: R, relation_def: RelationDef) -> Select<R>
+    where
+        R: EntityTrait,
+        Self::Entity: Related<R>,
+    {
+        <Self::Entity as Related<R>>::find_related_by_relation_def(relation_def).belongs_to(self)
     }
 
     /// Find linked Models
